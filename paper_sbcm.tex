@@ -82,7 +82,7 @@ Para abordar esta necesidad, presentamos el desarrollo de un tokenizador mínimo
 El \textbf{MNLPTK} se enfoca en la identificación precisa de lexemas en los textos de entrada, lo cual es un paso fundamental en el procesamiento del lenguaje natural (NLP). Una vez identificados los lexemas, el sistema los procesará para generar una ponderación sobre la llamada en general. 
 Esta evaluación se basará en varios criterios que, en cierta medida, reflejan la calidad y el contenido de la interacción.
 
-\section{Objetivo y alcance}
+\section{Objetivo, alcance y mejoras}
 
 
 El objetivo de este proyecto es implementar un sistema de \textbf{Speech Analytics} que aproveche los conocimientos adquiridos en el análisis léxico de un compilador. Este sistema se diseñará para procesar y analizar datos de audio convertidos a texto, extrayendo información valiosa para la organización.
@@ -91,7 +91,7 @@ Aplicando principios de análisis léxico, se busca desarrollar un programa capa
 
 En cuanto al alcance del proyecto, se espera que el análisis se realice únicamente a nivel léxico. No se considerarán aspectos sintácticos ni semánticos, ya que el objetivo es desarrollar un tokenizador mínimo.
 
-El aprendizaje también es un área que puede ampliarse en este proyecto. Actualmente, no se espera que el programa identifique variantes de género y número de las palabras de entrada reconocidas. Sin embargo, esta funcionalidad podría incorporarse en futuras iteraciones para mejorar la precisión y utilidad del análisis léxico.
+El programa podría potenciar su capacidad de aprendizaje mediante la implementación de enfoques más avanzados. Actualmente, no está diseñado para reconocer variantes de género y número en las palabras de entrada. Sin embargo, esta funcionalidad podría integrarse en futuras actualizaciones para mejorar la precisión y utilidad del análisis léxico. Además, es posible mejorar la ponderación de las palabras; actualmente, todas reciben el mismo peso, siendo asignadas como 1, -1 o 0 según su tipo.
 
 % ------------------------------- METODOLOGIA -------------------------------
 \section{Metodología}
@@ -101,7 +101,7 @@ Para la aplicación del \textbf{MNLPTK} se establecieron los siguientes puntos.
 El MNLPTK contará con los siguientes tokens: \textbf{EXP\_MALA}, \textbf{EXP\_NEUTRA}, \textbf{EXP\_BUENA} que irán destinados para el análisis de la interacción del cliente y \textbf{ATC\_MALA}, \textbf{ATC\_NEUTRA}, \textbf{ATC\_BUENA} que corresponderán a la interacción del personal de atención al cliente.
 
 \subsection{Definición de la herramienta a utilizar para la definición de los patrones}
-Para la representación de los patrones se opta por utilizar el algoritmo de simulación de un \textbf{AFD} para obtener los lexemas. En la Figura \ref{fig:tokens} podemos observar una categorizacion de los tokens por colores de acuerdo si es una palabra buena, nuetral o mala. Esto último para entender a través de un ejemplo, el funcionamiento del algoritmo propuesto. 
+Para la representación de los patrones se opta por utilizar el algoritmo de simulación de un \textbf{AFD} \cite{compi2008} para obtener los lexemas. En la Figura \ref{fig:tokens} podemos observar una categorizacion de los tokens por colores de acuerdo si es una palabra buena, nuetral o mala. Esto último para entender a través de un ejemplo, el funcionamiento del algoritmo propuesto. 
 
 \newcounter{i}
 \setcounter{i}{0}
@@ -303,6 +303,20 @@ pasando a MB tenemos que ...
 por lo tanto, la estructura propuesta es viable de implementar, ya que no requiere un espacio considerable.
 Aunque no se han tenido en cuenta las conjugaciones, hemos obtenido una aproximación que nos servirá como una cota.
 
+En términos de velocidad, se realizaron pruebas utilizando primero una lista y posteriormente la función de hash presentada anteriormente. Obtuvimos los siguientes resultados:
+
+\[
+\begin{aligned}
+& t_{lista}=0,00008580 \, [segundos]\\
+& t_{hash}=0,00005990 \, [segundos]\\\\
+& \frac{t_{hash}}{t_{lista}}*100\% \approx 69.81\%
+\end{aligned}
+\]
+
+por lo tanto, podemos concluir que al aplicar la función hash, la estrategia es aproximadamente un 30\% más rápida. Esto implica que con un caso de 10.000.000 de accesos usando una estructura de lista, experimentaríamos un retraso de 858 segundos, equivalentes a aproximadamente 14 minutos y 18 segundos. En contraste, al aplicar hash, el retraso se reduce a aproximadamente 599 segundos, equivalente a aproximadamente 9 minutos y 59 segundos.
+
+Es posible mejorar esto; el enfoque que utilizamos aquí podría no ser el más óptimo, por lo que hay margen para mejoras.
+
 \subsection{Consideraciones para la puntuación}
 Para obtener las evaluaciones, se tuvieron en cuenta las siguientes consideraciones:
 
@@ -310,11 +324,11 @@ Para obtener las evaluaciones, se tuvieron en cuenta las siguientes consideracio
 \begin{aligned}
 & - total: \text{ Cantidad de palabras reconocidas en la entrada.} \\
 & - total_{buenas}: \text{ Cantidad de palabras buenas encontradas.}\\
-& \text{Si se encontraron un saludo y una despedida, cada uno suma}\\
-& \text{un punto en este apartado.} \\
+& \text{Si se encontraron un saludo y una despedida, cada uno}\\
+& \text{suma un punto en este apartado.} \\
 & - total_{malas}: \text{ Cantidad de palabras malas encontradas.}\\
-& \text{Si no se encontraron un saludo y una despedida, cada uno suma}\\
-& \text{un punto en este apartado.} \\
+& \text{Si no se encontraron un saludo y una despedida, cada uno}\\
+& \text{suma un punto en este apartado.} \\
 & - total_{malas}: \text{ Cantidad de palabras malas encontradas.}\\
 \end{aligned}
 \]
@@ -341,7 +355,7 @@ con esto, obtendremos una puntuación final que oscilará entre 1 y 5.
 
 \section{Código fuente}
 
-A continuación, se presentan las partes más importantes del código fuente:
+A continuación, se presentan las partes más importantes del código fuente en Python:
 
 \lstset{
     language=Python,
@@ -360,18 +374,329 @@ A continuación, se presentan las partes más importantes del código fuente:
     frame=single,
     breaklines=true,
     tabsize=4,
-    captionpos=b
+    captionpos=b,
+    escapeinside={(*@}{@*)},
 }
 
-\begin{lstlisting}[caption={Ejemplo de código en Python}]
-def fibonacci(n):
-    """Return the n-th Fibonacci number."""
-    if n <= 0:
-        return 0
-    elif n == 1:
-        return 1
+\begin{lstlisting}[caption={Clase Nodo}, xleftmargin=0.05\textwidth]
+class Nodo:
+    """
+    Clase que representa un nodo de un DFA (Deterministic Finite Automaton) que permita identificar palabras en un texto.
+    Atributos:
+        siguiente([]): arreglo de 37 elementos, que representa las posibles transiciones del nodo.
+        token(str): token al que pertenecen las letras que forman la palabra que llega al nodo en caso de ser un estado final.
+        estado_final(bool): indica si el nodo es un estado final o no.
+    Ejemplo:
+        siguiente = [Nodo1, Nodo2, Nodo3, ..., Nodo37]
+            Nodo1: transici(*@ó@*)n con la letra 'a'
+            Nodo2: transici(*@ó@*)n con la letra 'b'
+            ...
+            Nodo37: transici(*@ó@*)n con la letra '(*@ü@*)'
+        token = 'ATC_BUENA'
+        estado_final = True
+    """
+    def __init__(self):
+        self.siguiente = np.empty(37, dtype=object)
+        self.token = ''
+        self.estado_final = False
+
+    def mover(self, caracter):
+        """
+        Metodo que permite mover de un nodo a otro, dependiendo de la letra que se recibe como par(*@á@*)metro.
+        Parametros:
+            caracter(str): letra que se recibe para mover al siguiente nodo.
+        Returns:
+            nodo_siguiente(Nodo): nodo al que se movi(*@ó@*).
+        """
+        print("Moviendo al siguiente nodo con {}...".format(caracter))
+
+        nodo_siguiente = None
+        hash_alfabeto = HashFunction().get_funcion_hash()
+        
+        if self.siguiente[hash_alfabeto[caracter]]:
+            nodo_siguiente = self.siguiente[hash_alfabeto[caracter]]
+        else:
+            nodo_siguiente = Nodo()
+            self.siguiente[hash_alfabeto[caracter]] = nodo_siguiente 
+
+        print("Transici(*@ó@*)n completada.")
+        return nodo_siguiente
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Función Hash}, xleftmargin=0.05\textwidth]
+class HashFunction:
+    """
+    Clase que implementa el patr(*@ó@*)n Singleton para crear una funci(*@ó@*)n hash que asigna un valor a cada letra del alfabeto espa(*@ñ@*)ol.
+    Ejemplo:
+        hash_function = HashFunction().get_funcion_hash()
+    """
+    _instance = None  # Variable de clase para almacenar la instancia (*@ú@*)nica
+    _funcion_hash = None  # Variable de clase para almacenar la funci(*@ó@*)n hash
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def __init__(self):
+        if self._funcion_hash is None:  # Evitar la re-creaci(*@ó@*)n del hash
+            self._funcion_hash = self.crear_funcion_hash()
+
+    def get_funcion_hash(self):
+        return self._funcion_hash
+
+    @staticmethod
+    def crear_funcion_hash():
+        """
+        Funci(*@ó@*)n que crea una funci(*@ó@*)n hash que asigna un valor a cada letra del alfabeto espa(*@ñ@*)ol.
+        Retorna:
+            funcion_hash(dict): diccionario que contiene la funci(*@ó@*)n hash.
+        Ejemplo:
+            {'a': 0, 'b': 1, ..., 'z': 13, '(*@ñ@*)': 14, '(*@á@*)': 15, '(*@í@*)': 16, '(*@í@*)': 17, '(*@ó@*)': 18, '(*@ú@*)': 19, '(*@ä@*)': 20, '(*@ë@*)': 21, '(*@ï@*)': 22, '(*@ö@*)': 23, '(*@ü@*)': 24}
+        """
+        print("Creando funci(*@ó@*)n hash...")
+
+        funcion_hash = {}
+        valor = 0
+
+        # De 'a' a la 'n'
+        for char in range(ord('a'), ord('n')+1):
+            funcion_hash[chr(char)] = valor
+            valor += 1
+
+        # La '(*@ñ@*)'
+        funcion_hash['(*@ñ@*)'] = valor
+        valor += 1
+
+        # De la 'o' hasta la 'z'
+        for char in range(ord('o'), ord('z')+1):
+            funcion_hash[chr(char)] = valor
+            valor += 1
+
+        # Caracteres correspondientes a las vocales con tilde
+        acentuadas = "(*@á@*)(*@í@*)(*@í@*)(*@ó@*)(*@ú@*)"
+        for char in acentuadas:
+            funcion_hash[char] = valor
+            valor += 1
+
+        # Caracteres correspondientes a las vocales con dieresis
+        dieresis = "(*@ä@*)(*@ë@*)(*@ï@*)(*@ö@*)(*@ü@*)"
+        for char in dieresis:
+            funcion_hash[char] = valor
+            valor += 1
+
+        print("Funci(*@ó@*)n hash creada.")
+        return funcion_hash
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Core del análisis. Procesar}, xleftmargin=0.05\textwidth]
+def procesar(id_peticion, puntaje, lexemas_retorno, puntuacion):
+    """
+    Funci(*@ó@*)n que procesa el texto ingresado por el usuario y muestra los resultados en una ventana emergente.
+    Par(*@á@*)metros:
+        id_peticion(int): 0 para el personal, 1 para el cliente
+        puntaje([]): array de 3 elementos para almacenar el puntaje de cada tipo de lexema
+        lexemas_retorno([]): lista de lexemas
+    Returns:
+        None
+    """
+    # Cargar el tokenizador dependiendo de la petici(*@ó@*)n
+    raiz = cargar_tokenizador(id_peticion)
+
+    token_mala = ''
+    token_neutra = ''
+    token_buena = ''
+
+	# Se establecen las etiquetas dependiendo de la petici(*@ó@*)n
+    if id_peticion == 0:
+        token_mala = 'ATC_MALA'
+        token_neutra = 'ATC_NEUTRA'
+        token_buena = 'ATC_BUENA'
     else:
-        return fibonacci(n-1) + fibonacci(n-2)
+        token_mala = 'EXP_MALA'
+        token_neutra = 'EXP_NEUTRA'
+        token_buena = 'EXP_BUENA'
+
+    # Procesar el texto dependiendo de la petici(*@ó@*)n
+    if id_peticion == 0:
+        print('Procesando el texto del personal...')
+        entrada = texto_area_personal.get("1.0", "end-1c")
+    else:
+        print('Procesando el texto del cliente...')
+        entrada = texto_area_cliente.get("1.0", "end-1c")
+    
+    ban_saludo, ban_despedida = False, False
+    if id_peticion == 0:
+
+        # Mapear si en la entrada hay algun saludo
+        print('Mapeando saludos...')
+        saludos = ['buenos d(*@í@*)as', 'buen d(*@í@*)a', 'buenas tardes', 'buenas noches']
+        ban_saludo = False
+        for saludo in saludos:
+            if saludo in entrada:
+                ban_saludo = True
+                break
+        if ban_saludo:
+            print('Saludo encontrado')
+        else:
+            print('Saludo no encontrado')
+
+        # Mapear si en la entrada hay alguna despedida
+        print('Mapeando despedidas...')
+        despedidas = ['hasta luego']
+        ban_despedida = False
+        for despedida in despedidas:
+            if despedida in entrada:
+                ban_despedida = True
+                break
+        if ban_despedida:
+            print('Despedida encontrada')
+        else:
+            print('Despedida no encontrada')
+        
+    # Si no hay texto, no hacer nada
+    if not entrada:
+        print('No hay texto para procesar')
+        return
+    else:
+        print('Texto a procesar: ' + entrada)
+
+        # Generar la funci(*@ó@*)n hash
+        hash_alfabeto = HashFunction().get_funcion_hash()
+
+        siguiente = raiz
+        lexema = ''
+        lexemas = []
+
+        # Preprocesamiento de la entrada
+        entrada = entrada.lower()
+        entrada = entrada + ' '
+
+        # Contadores de lexemas por token
+        buena = 0
+        neutra = 0
+        mala = 0
+
+        # Por cada caracter en la entrada
+        for caracter in entrada:
+            
+            # Si el caracter no es un espacio, salto de l(*@í@*)nea, tabulaci(*@ó@*)n o retorno de carro seguir procesando caracteres, caso contrario o es un lexema ya completo o es un espacio en blanco 
+            if not(caracter in [' ', '\n', '\t', '\r', '.']):
+                # Si el caracter es un caracter especial, no se considera caso contrario se agrega al lexema y se mueve al siguiente nodo
+                if caracter in ['/', ',', '?', '(*@¿@*)', '!', '(*@¡@*)', '(', ')', '"', ':', ';', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]:
+                    continue
+                else:
+                    lexema = lexema + caracter
+                    siguiente = siguiente.mover(caracter)
+            else:
+                # Si el lexema es vac(*@í@*)o, no hacer nada caso contrario se marca el nodo actual como estado final
+                if lexema == '':
+                    continue
+                else:
+                    siguiente.estado_final = True
+                    # Interfaz para preguntar al usuario que tipo de lexema es en caso de no tener un token asignado
+                    if siguiente.token == '':
+                        print('\t' + lexema + ' no pertenece a ning(*@ú@*)n token')
+                        # Mostrar ventana emergente
+                        mostrar_emergente(siguiente, lexema, id_peticion)
+                    else:
+                        print('\t' + lexema + ' pertenece al token ' + siguiente.token)
+
+                    # Agregar el lexema a la lista de lexemas
+                    lexemas.append(lexema)
+                    
+                    # Contador de lexemas por token
+                    if siguiente.token[-5:] == "BUENA":
+                        buena += 1
+                    elif siguiente.token[-6:] == "NEUTRA":
+                        neutra += 1
+                    else:
+                        mala += 1
+                    
+                    # Reiniciar el lexema y el nodo actual vuelve a la raiz
+                    lexema = ''
+                    siguiente = raiz
+    
+    # Mostrar los resultados en una ventana emergente
+    if id_peticion ==  0:
+
+        # Inicializar las puntuaciones
+        puntuacion_buena = buena
+        puntuacion_mala = mala
+
+        # Ajustar las puntuaciones basadas en los indicadores de saludo y despedida
+        if ban_saludo:
+            puntuacion_buena += 1
+        else:
+            puntuacion_mala += 1
+            
+        if ban_despedida:
+            puntuacion_buena += 1
+        else:
+            puntuacion_mala += 1
+
+        # Verificar que no haya divisi(*@ó@*)n por cero
+        total_puntuaciones = puntuacion_buena + puntuacion_mala
+        if total_puntuaciones == 0:
+            puntuacion_personal = 1
+        else:
+
+            # Normalizar los puntajes
+            buena_normalizado = puntuacion_buena / total_puntuaciones
+            mala_normalizado = puntuacion_mala / total_puntuaciones
+
+            # Calcular la ponderaci(*@ó@*)n final en escala del 1 al 5
+            puntuacion_personal = 1 + ( 0 if (buena_normalizado - mala_normalizado) <= 0 else (buena_normalizado - mala_normalizado) ) * 4
+
+        puntuacion[0] = puntuacion_personal
+
+        messagebox.showinfo("Resultados", "El analisis ha arrojado los siguientes resultados :\n\n- {} : {}\n- {}: {}\n- {}: {} \n- SALUDO: {} \n- DESPEDIDA: {} \n\n- Balance buenas: {} \n- Balance malas: {} \nPuntuacion final: {:.2f}".format(token_buena, buena, token_neutra, neutra, token_mala, mala, 'Si' if ban_saludo else 'No', 'Si' if ban_despedida else 'No', puntuacion_buena, puntuacion_mala, puntuacion_personal))
+    else:
+    
+        # Inicializar las puntuaciones
+        puntuacion_buena = buena
+        puntuacion_mala = mala
+
+        # Verificar que no haya divisi(*@ó@*)n por cero
+        total_puntuaciones = puntuacion_buena + puntuacion_mala
+        if total_puntuaciones == 0:
+            puntuacion_cliente = 1
+        else:
+
+            # Normalizar los puntajes
+            buena_normalizado = puntuacion_buena / total_puntuaciones
+            mala_normalizado = puntuacion_mala / total_puntuaciones
+
+            # Calcular la ponderaci(*@ó@*)n final en escala del 1 al 5
+            puntuacion_cliente = 1 + ( 0 if (buena_normalizado - mala_normalizado) <= 0 else (buena_normalizado - mala_normalizado) ) * 4
+        
+        puntuacion[1] = puntuacion_cliente
+    
+        messagebox.showinfo("Resultados", "El analisis ha arrojado los siguientes resultados :\n\n- {}: {}\n- {}: {}\n- {}: {} \n\nPuntuacion final: {:.2f}".format(token_buena, buena, token_neutra, neutra, token_mala, mala, puntuacion_cliente))
+    
+    # Actualizar el puntaje
+    puntaje[0] = buena
+    puntaje[1] = neutra
+    puntaje[2] = mala
+
+    # Eliminar lexemas duplicados convirtiendo a conjunto y luego a lista
+    lexemas = list(set(lexemas))
+    # Ordenar lexicogr(*@á@*)ficamente
+    lexemas.sort()
+
+    # Copiar lexemas en lexemas_retorno
+    lexemas_retorno.clear()
+    for lexema in lexemas:
+        lexemas_retorno.append(lexema)
+
+    resaltar_palabras(raiz, id_peticion, lexemas_retorno)
+
+    # Guardar el tokenizador
+    guardar_tokenizador(raiz, id_peticion)
+
+    # Liberar la memoria
+    raiz = None
+            
 \end{lstlisting}
 
 \section{Caso de prueba}

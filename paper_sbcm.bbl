@@ -19,6 +19,45 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{compi2008}{book}{}
+      \name{author}{4}{}{%
+        {{hash=87e9142329f09390b038692270dc2168}{%
+           family={Aho},
+           familyi={A\bibinitperiod},
+           given={Alfred\bibnamedelima V.},
+           giveni={A\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=2935cefbbdea2e46ed9635bd5cf1db28}{%
+           family={Lam},
+           familyi={L\bibinitperiod},
+           given={Monica\bibnamedelima S.},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=b0e677112f976b0ff780553fcb888351}{%
+           family={Sethi},
+           familyi={S\bibinitperiod},
+           given={Ravi},
+           giveni={R\bibinitperiod}}}%
+        {{hash=cafe1d770c56825ebccdb81e9f7c9b3b}{%
+           family={Ullman},
+           familyi={U\bibinitperiod},
+           given={Jeffrey\bibnamedelima D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Pearson PLC}%
+      }
+      \strng{namehash}{e81f18fe5b19a688d5145730fb236624}
+      \strng{fullhash}{b955b20997f1b0d8317cbada66b20151}
+      \strng{bibnamehash}{e81f18fe5b19a688d5145730fb236624}
+      \strng{authorbibnamehash}{e81f18fe5b19a688d5145730fb236624}
+      \strng{authornamehash}{e81f18fe5b19a688d5145730fb236624}
+      \strng{authorfullhash}{b955b20997f1b0d8317cbada66b20151}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Compiladores. Principios, técnicas y herramientas}
+      \field{year}{2008}
+    \endentry
     \entry{rae2014}{article}{}
       \name{author}{1}{}{%
         {{hash=cf53e1cc68a110215dd4bb3932f57dce}{%
