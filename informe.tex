@@ -1,0 +1,443 @@
+\documentclass[twocolumn, fontsize=10pt]{article}
+\usepackage[margin=0.70in]{geometry}
+\usepackage{lipsum,mwe,abstract}
+\usepackage[T1]{fontenc} 
+\usepackage[spanish]{babel} 
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} 
+\fancyfoot[C]{\thepage} % Page numbering for right footer
+\usepackage{lipsum}
+\setlength\parindent{0pt} 
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage{cuted}
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\normalfont \normalsize \scshape} % Section names in small caps and normal fonts
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\usepackage{icomma}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\renewenvironment{abstract} % Change how the abstract look to remove margins
+ {\small
+  \begin{center}
+  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
+  \end{center}
+  \list{}{%
+    \setlength{\leftmargin}{0mm}
+    \setlength{\rightmargin}{\leftmargin}%
+  }
+  \item\relax}
+ {\endlist}
+ 
+\makeatletter
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt} % Change how the title looks like
+\begin{flushleft}
+  \textbf{\@title}
+  \@author \\ 
+  \@date
+\end{flushleft}\egroup
+}
+\makeatother
+
+%% ------------------------------- HEAD ------------------------------- 
+
+\title{
+\centering
+\Large Desarrollo de un Tokenizador Mínimo para la Analítica de Voz en Interacciones Telefónicas en Español\\
+[10pt] 
+}
+\date{\today}
+\author{Elías Cristaldo}
+
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Palabras clave:}} #1
+}
+
+\begin{document}
+
+\twocolumn[ \maketitle ]
+
+% ------------------------------- ABSTRACT -------------------------------
+\begin{abstract}
+Este trabajo propone una solución a la problemática de los analizadores de voz, aplicando conocimientos fundamentales del análisis léxico para construir un tokenizador mínimo que funcione como una herramienta efectiva de analítica de voz. Este tokenizador se encargará de identificar los lexemas presentes en un texto que representa la interacción de una llamada telefónica. La solución se desarrolla en tres etapas principales: la primera etapa corresponde al análisis del personal de atención, en esta etapa el texto correspondiente a la interacción del personal de atención es ingresado y analizado, generando una puntuación que proporciona una idea relativa del desempeño del personal. Como segunda etapa tenemos el análisis del cliente, aquí se ingresa y analiza el texto correspondiente a la interacción del cliente, obteniendo una puntuación que refleja el nivel relativo de satisfacción del cliente respecto a la solución de sus necesidades. Como tercera y última etapa tenemos el análisis global, en esta etapa se realiza un análisis global combinando las puntuaciones obtenidas en las etapas anteriores, ofreciendo una evaluación integral de la llamada. El programa propuesto demuestra un buen desempeño en el análisis léxico del texto recibido como entrada. Además, puede ser ampliado para mejorar su capacidad de detección de patrones y, al ser combinado con otros algoritmos, alcanzar niveles óptimos de rendimiento.
+\end{abstract}
+
+\keywords{tokenizador mínimo, analítica de voz, procesamiento de lenguaje natural, análisis léxico, interacción telefónica, satisfacción del cliente, desempeño del personal}
+
+\rule{\linewidth}{0.5pt}
+
+% ------------------------------- INTRODUCCION -------------------------------
+\section{Introducción}
+En el ámbito de la analítica de conversaciones, la capacidad de procesar y analizar grandes volúmenes de interacciones telefónicas se ha vuelto una necesidad crítica para muchas organizaciones. Estas interacciones contienen una gran cantidad de información valiosa que puede ser utilizada para mejorar la calidad del servicio, entender mejor las necesidades de los clientes y optimizar procesos internos. 
+
+Para abordar esta necesidad, presentamos el desarrollo de un tokenizador mínimo, conocido como MNLPTK (Minimal Natural Language Processing Tokenizer). Este sistema está diseñado para actuar como una solución de analítica de voz (speech analytics), con el objetivo de identificar y procesar palabras (lexemas) en textos en idioma español que son el resultado de conversaciones telefónicas.
+
+El \textbf{MNLPTK} se enfoca en la identificación precisa de lexemas en los textos de entrada, lo cual es un paso fundamental en el procesamiento del lenguaje natural (NLP). Una vez identificados los lexemas, el sistema los procesará para generar una ponderación sobre la llamada en general. Esta evaluación estará basada en varios criterios que reflejan la calidad y el contenido de la interacción.
+
+\section{Objetivo y alcance}
+El objetivo de este proyecto es implementar un sistema de Speech Analytics que utilice los conocimientos adquiridos en el análisis léxico de un compilador. Este sistema se diseñará para procesar y analizar grandes volúmenes de datos de audio, transformando el habla en texto y extrayendo información valiosa mediante técnicas avanzadas de procesamiento de lenguaje natural.
+
+A través de la aplicación de principios de análisis léxico, se espera desarrollar un programa capaz de identificar patrones en las conversaciones y asignar puntuaciones coherentes a las llamadas. Esto permitirá obtener un análisis detallado tanto de la calidad del servicio como de la atención al cliente, proporcionando información valiosa para mejorar continuamente el servicio ofrecido.
+
+En cuanto al alcance del proyecto, se espera que el análisis se realice únicamente a nivel léxico. No se considerarán aspectos sintácticos ni semánticos, ya que el objetivo es desarrollar un tokenizador mínimo.
+
+El aprendizaje también es un área que puede ampliarse en este proyecto. Actualmente, no se espera que el programa identifique variantes de género y número de las palabras de entrada reconocidas. Sin embargo, esta funcionalidad podría incorporarse en futuras iteraciones para mejorar la precisión y utilidad del análisis léxico.
+
+% ------------------------------- METODOLOGIA -------------------------------
+\section{Metodología}
+Para la aplicación del MNLPTK se establecieron los siguientes puntos.
+
+\subsection{Tokens definidos para el lenguaje de entrada}
+El MNLPTK contará con los siguientes TOKENS: \textbf{EXP\_MALA}, \textbf{EXP\_NEUTRA}, \textbf{EXP\_BUENA} que irán destinados para el análisis de la interacción del cliente y \textbf{ATC\_MALA}, \textbf{ATC\_NEUTRA}, \textbf{ATC\_BUENA} que corresponderán a la interacción del personal de atención al cliente.
+
+\subsection{Definición de la herramienta a utilizar para la definición de los patrones}
+Para la representación de los patrones se opta por utilizar el algoritmo de simulación de un \textbf{AFD} para obtener los lexemas. En la Figura \ref{fig:tokens} podemos observar una categorizacion de los tokens por colores de acuerdo si es una palabra buena, nuetral o mala. Esto último para entender a través de un ejemplo, el funcionamiento del algoritmo propuesto. 
+
+\newcounter{i}
+\setcounter{i}{0}
+
+\definecolor{mala}{HTML}{FFBABA}
+\definecolor{neutra}{HTML}{E0E0E0}
+\definecolor{buena}{HTML}{DFF2BF}
+
+\begin{figure}[H]
+  \centering
+  	\begin{tikzpicture}
+    		\node[circle, draw, double, fill=mala, minimum height=1.8cm, 
+        text width=1.8cm, align=center, inner sep=0] (mala) at (0,0) {MALA};
+    		
+    		\node[circle, draw, double, fill=neutra, minimum height=1.8cm, 
+        text width=1.8cm, align=center, inner sep=0] (mala) at (2,0) {NEUTRA};
+    		
+    		\node[circle, draw, double, fill=buena,  minimum height=1.8cm, 
+        text width=1.8cm, align=center, inner sep=0] (mala) at (4,0) {BUENA};
+        
+	\end	{tikzpicture}
+	\caption{Tokens.}
+	\label{fig:tokens}
+\end{figure}
+
+A continuación, en la Figura \ref{fig:afd} se muestra a través de un ejemplo, la estructura que se utilizará en la implementación del AFD. En esta representación, cada nodo que corresponda a un estado final está asociado a una categoría específica. Es importante destacar que habrán dos estructuras similares: una para la atención al cliente, que manejará los tokens ATC\_MALA, ATC\_NEUTRA y ATC\_BUENA. Otra otra para la experiencia del cliente, que incluirá los tokens EXP\_MALA, EXP\_NEUTRA y EXP\_BUENA.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+  
+    % Nodos
+    \node[circle, draw] (\arabic{i}) at (0,6) {\arabic{i}};
+    \stepcounter{i}
+	\node[circle, draw, double, fill=neutra] (\arabic{i}) at (1,6) {\arabic{i}};
+    \stepcounter{i}
+    	\node[circle, draw] (\arabic{i}) at (2,6) {\arabic{i}};
+    \stepcounter{i}
+    \node[circle, draw] (\arabic{i}) at (3,6) {\arabic{i}};
+    \stepcounter{i}
+    	\node[circle, draw] (\arabic{i}) at (4,6) {\arabic{i}};
+    \stepcounter{i}
+    \node[circle, draw, double, fill=buena] (\arabic{i}) at (5,6) {\arabic{i}};
+    \stepcounter{i}
+   	\node[circle, draw, double, fill=buena] (\arabic{i}) at (6,6) {\arabic{i}};
+    \stepcounter{i}
+    \node[circle, draw, double, fill=buena] (\arabic{i}) at (5,5) {\arabic{i}};
+    \stepcounter{i}
+    
+   	\node[circle, draw] (\arabic{i}) at (1,4) {\arabic{i}};
+    \stepcounter{i}
+    \node[circle, draw] (\arabic{i}) at (2,4) {\arabic{i}};
+    \stepcounter{i}
+   	\node[circle, draw] (\arabic{i}) at (3,4) {\arabic{i}};
+    \stepcounter{i}
+   	\node[circle, draw] (\arabic{i}) at (4,4) {\arabic{i}};
+    \stepcounter{i}
+   	\node[circle, draw] (\arabic{i}) at (5,4) {\arabic{i}};
+    \stepcounter{i}
+   	\node[circle, draw, double, fill=mala] (\arabic{i}) at (6,4) {\arabic{i}};
+    \stepcounter{i}
+    
+    \node[circle, draw] (\arabic{i}) at (2,3) {\arabic{i}};
+    \stepcounter{i}
+    \node[circle, draw] (\arabic{i}) at (3,3) {\arabic{i}};
+    \stepcounter{i}
+    \node[circle, draw] (\arabic{i}) at (4,3) {\arabic{i}};
+    \stepcounter{i}
+    \node[circle, draw, double, fill=buena] (\arabic{i}) at (5,3) {\arabic{i}};
+    \stepcounter{i}
+ 
+    \node[circle, draw] (puntos) at (1,2) {...};
+    \node[circle, draw] (n) at (1,0) {n};
+    
+    % Aristas con flechas
+    \draw[-{Stealth}] (0) -- node[midway, above] {a} (1);
+    \draw[-{Stealth}] (1) -- node[midway, above] {y} (2);
+    \draw[-{Stealth}] (2) -- node[midway, above] {u} (3);
+    \draw[-{Stealth}] (3) -- node[midway, above] {d} (4);
+    \draw[-{Stealth}] (4) -- node[midway, above] {a} (5);
+    \draw[-{Stealth}] (5) -- node[midway, above] {r} (6);
+    \draw[-{Stealth}] (4) |- node[near end, above] {o} (7);
+    
+    \draw[-{Stealth}] (0) |- node[near end, above] {b} (8);
+    \draw[-{Stealth}] (8) -- node[midway, sloped, above] {a} (9);
+    \draw[-{Stealth}] (9) -- node[midway, sloped, above] {s} (10);
+    \draw[-{Stealth}] (10) -- node[midway, sloped, above] {u} (11);
+    \draw[-{Stealth}] (11) -- node[midway, sloped, above] {r} (12);
+    \draw[-{Stealth}] (12) -- node[midway, sloped, above] {a} (13);
+    
+    \draw[-{Stealth}] (8) |- node[near end, sloped, above] {u} (14);
+    \draw[-{Stealth}] (14) -- node[midway, sloped, above] {e} (15);
+    \draw[-{Stealth}] (15) -- node[midway, sloped, above] {n} (16);
+    \draw[-{Stealth}] (16) -- node[midway, sloped, above] {o} (17);
+    
+    \draw[-{Stealth}] (0) |- node[near end, sloped, above] {...} (puntos);
+    \draw[-{Stealth}] (0) |- node[near end, sloped, above] {ü} (n);
+    
+  \end{tikzpicture}
+  \caption{Grafo dirigido con tres nodos.}
+  \label{fig:afd}
+\end{figure}
+
+La idea es que todas las letras del abecedario tengan un único estado inicial. Esto permitirá que al recorrer la estructura, solo se necesite una función, la función \textbf{mover}. Esta función tomará un carácter de entrada y, en función del nodo en el que se encuentre, se moverá a un nuevo nodo.
+
+\subsection{Estructura de los Nodos del AFD}
+Para la construcción del AFD, se definió la estructura Nodo junto con sus atributos correspondientes. En la figura \ref{fig:estructura_nodo} podremos apreciar con más detalles la mencionada estructura.
+
+\begin{figure}[H]
+	\begin{tikzpicture}
+	
+		% Nodos
+		\node (atributos) at (3, 5) {Atributos};
+		\node (estructuras) at (7,5) {Estructuras};		
+		
+		\node[rectangle, draw] (siguiente) at (3,4) {Siguiente};
+		\node[rectangle, draw] (token) at (3,2) {Token};
+		\node[rectangle, draw] (estado_final) at (3,0) {Estado Final};
+		\node[circle, draw] (nodo) at (0,2) {Nodo};
+		\node[draw, rectangle] (array) at (7,4) {
+			\begin{tabular}{|c|c|c|c|}
+				\hline
+				0 & 1 & ... & 36 \\
+				\hline
+				  &   & ... &   \\
+				\hline
+			\end{tabular}
+		};
+		\node[circle, draw] (string) at (7,2) {str};
+		\node[circle, draw] (boolean) at (7,0) {boolean};
+		
+		% Aristas
+		\draw (nodo) |- (siguiente);
+		\draw (siguiente) -- (array);
+		\draw (nodo) -- (token);
+		\draw (token) -- (string);
+		\draw (nodo) |- (estado_final);
+		\draw (estado_final) -- (boolean);
+
+	\end{tikzpicture}
+	\caption{Modelo de un Nodo en el AFD.}
+	\label{fig:estructura_nodo}
+\end{figure}
+
+El atributo \textbf{Siguiente} es un array con 37 elementos, donde cada celda contiene una referencia a otro nodo. El atributo \textbf{Token} es una cadena de texto de tipo string que describe el token al que pertenece el nodo. Por último, el atributo \textbf{Estado Final} es un valor booleano que indica si el nodo es un estado final o no. En la siguiente sección, se presentará la función hash que mapea los valores del array \textbf{Siguiente}.
+
+\subsection{Función Hash}
+En la sección anterior se presentó la estructura de un nodo, destacando que el atributo \textbf{Siguiente} es un array de 37 elementos. ¿Por qué se eligió esta estructura?. La decisión se basa en la necesidad de un acceso más rápido a los datos, donde cada posición del array representa un carácter del alfabeto, como se muestra en la Figura \ref{fig:funcion_hash}.
+
+\begin{figure}[H]
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+  		\hline
+		a & b & ... & ñ & ... & z & ... & á & ... & ú & ä & ... & ü \\
+  		\hline
+  		0 & 1 & ... & 14 & ... & 26 & ... & 27 & ... & 	31 & 32 & ... & 36 \\
+  		\hline
+	\end{tabular}
+	\caption{Función hash para el array de 37 elementos.}
+	\label{fig:funcion_hash}
+\end{figure}
+
+Se vió que el El Diccionario de la Real Academia Española contiene aproximadamente 93.000 entradas. Se calculó que cada nodo ocupa aproximadamente 464 bytes. Con una media de 6 letras por palabras. Por lo tanto se tiene que
+
+\[
+\begin{aligned}
+& N: \text{ Cantidad aproximada de nodos} \\
+& C: \text{ Capacidad requerida}\\
+&
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+N & = 93000 \: \left[palabras\right] * 6 \: \left[\frac{letras}{palabras}\right]\\
+& = 558000 \: \left[letras\right]\\
+&
+\end{aligned}
+\]
+
+como cada letra representa un nodo, entonces...
+
+\[
+\begin{aligned}
+C & = 558000 \: \left[nodo\right] * 464 \: \left[\frac{bytes}{nodo}\right]\\
+& = 258912000 \: \left[bytes\right]\\
+&
+\end{aligned}
+\]
+
+pasando a MB tenemos que ...
+
+\[
+\begin{aligned}
+558000 \: \left[bytes\right] & \equiv \frac{258912000}{2^{20}}\\
+& \approx \num{258.912} \left[MB\right]\\
+&
+\end{aligned}
+\]
+
+por lo tanto, la estructura propuesta es viable de implementar, ya que no requiere un espacio considerable.
+
+\subsection{Consideraciones para la puntuación}
+
+\section{Código fuente}
+
+\section{Caso de prueba}
+A continuación, se detallan los pasos necesarios para procesar el caso de prueba:
+
+\begin{itemize}
+
+	\item Entrada – Atencion al Cliente
+	
+Buenos días, le saluda Joanna de atención al cliente, ¿en qué puedo ayudarle?
+Puedo darle esa información.Por favor, ¿me facilita su número de documento?
+Gracias, una pregunta de seguridad, ¿puede darme el año de su fecha de
+nacimiento?
+Gracias. Verifico que su saldo es de doscientos trienta mil guaraníes a la fecha de
+ayer. ¿Algo más que pueda hacer por usted?
+Gracias por llamar al servicio de atención al cliente.Que tenga un buen día.
+
+	\item Entrada – Cliente
+	
+Buen dia. Desde ayer que no puedo consultar mi saldo.
+Claro, tres millones doscientos sesenta mil cero sesenta y ocho.En año de mi nacimiento es mil novecientos noventa y seis.
+No, muchas gracias. Usted ha sido my amable.
+Hasta luego.
+
+\end{itemize}
+
+\subsection{Procesamiento de la interacción del ATC}
+A continuación se detallan los pasos a seguir para procesar la interacción del personal de atención al cliente.
+
+\subsubsection{Ingreso de los datos}
+Primero, se ingresa el texto en el apartado correspondiente al Personal de Atención al Cliente (ATC), tal como se muestra en la Figura \ref{fig:graf_atc_paso1}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graficas/ATC_paso1.png}
+    \caption{Ingreso de datos del personal}
+    \label{fig:graf_atc_paso1}
+\end{figure}
+
+\subsubsection{Procesamos el texto}
+A continuación, se presiona el botón \textbf{Procesar} correspondiente al personal, tal como se muestra en la Figura \ref{fig:graf_atc_paso2}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graficas/ATC_paso2.png}
+    \caption{Procesamiento del texto ingresado}
+    \label{fig:graf_atc_paso2}
+\end{figure}
+
+\subsubsection{Categorización de los lexemas}
+Al principio, es necesario entrenar el programa, ya que aún no tiene cargada ninguna información. Por lo tanto, debemos indicarle palabra por palabra a qué token pertenecen, tal y como se observa en la Figura \ref{fig:graf_atc_paso3}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graficas/ATC_paso3.png}
+    \caption{Categorización de los lexemas}
+    \label{fig:graf_atc_paso3}
+\end{figure}
+
+\subsubsection{Resultados preliminares}
+Una vez completado el paso anterior, podremos observar los resultados generados para este análisis, los cuales se ajustarán a los criterios establecidos previamente. En la Figura \ref{fig:graf_atc_paso4}, podremos observar esto. Estos resultados nos proporcionan información sobre el desempeño del personal de ATC y nos permiten identificar si es necesario realizar mejoras en su capacitación.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graficas/ATC_paso4.png}
+    \caption{Resultados del análisis}
+    \label{fig:graf_atc_paso4}
+\end{figure}
+
+En la pantalla principal también podremos visualizar los resultados de manera gráfica de la categorización, tal y como se muestra en la Figura \ref{fig:graf_atc_paso5}. En donde el color de resaltado indica el token al que pertenece la palabra.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graficas/ATC_paso5.png}
+    \caption{Resultado de la categorización}
+    \label{fig:graf_atc_paso5}
+\end{figure}
+
+\subsubsection{Administración de tokens}
+Una vez procesado el texto, también podemos gestionar los tokens de las palabras reconocidas en el texto. Es decir, tenemos la opción de cambiar los tokens ya establecidos para que el tokenizador pueda actualizar su base de datos y aprender conforme vayamos estableciendo los parámetros. Para acceder a esta función, simplemente hacemos clic en el botón \textbf{Administrar Tokens}, como se muestra en la Figura \ref{fig:graf_atc_paso6}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{graficas/ATC_paso6.png}
+    \caption{Administración de tokens}
+    \label{fig:graf_atc_paso6}
+\end{figure}
+
+A continuación, se desplegará la ventana de administración de tokens, donde tendremos la capacidad de modificar el token asociado al lexema reconocido, tal y como se puede observar en la Figura \ref{fig:graf_atc_paso7}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{graficas/ATC_paso7.png}
+    \caption{Ventana del administrador de tokens}
+    \label{fig:graf_atc_paso7}
+\end{figure}
+
+\subsection{Procesamiento de la interacción del Cliente}
+Todos los pasos descritos anteriormente para la interacción del personal de atención al cliente (ATC) se repiten para el cliente. El resultado final se puede observar en la Figura \ref{fig:graf_cliente_resultados}. Esta información es útil para determinar la calidad del servicio ofrecido.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{graficas/cliente_resultados.png}
+    \caption{Ventana del administrador de tokens}
+    \label{fig:graf_cliente_resultados}
+\end{figure}
+
+\subsection{Resultado y puntuación general de la interacción}
+A continuación, para generar el resumen general de la interacción, debemos presionar el botón \textbf{Generar Resumen}, como se muestra en la Figura \ref{fig:graf_resumen_general}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{graficas/resumen_general.png}
+    \caption{Generación del resumen general}
+    \label{fig:graf_resumen_general}
+\end{figure}
+
+Esto nos generará un resumen de la interacción de la llamada entre el ATC y el cliente. Esta puntuación es un promedio de ambas interacciones y nos proporciona una noción de la puntuación general de la llamada realizada. El resultado se puede observar en la Figura \ref{fig:graf_resultado_general}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{graficas/resultado_general.png}
+    \caption{Generación del resumen general}
+    \label{fig:graf_resultado_general}
+\end{figure}
+
+
+% ------------------------------- MAIN CONTENT -------------------------------
+\begin{thebibliography}{}
+\bibitem{Ref1}{Shyam Lal1 and Mahesh Chandra (2014). Efficient Algorithm for Contrast Enhancement of Natural Images \href{https://citeseerx.ist.psu.edu/documentrepid=rep1&type=pdf&doi=1beeaf3b38ec47c86e461fd0b2778cd4bb7b7079}{(enlace)}.}
+\end{thebibliography}
+
+\end{document}
+ 
