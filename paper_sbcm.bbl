@@ -1,0 +1,54 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{rae2014}{article}{}
+      \name{author}{1}{}{%
+        {{hash=cf53e1cc68a110215dd4bb3932f57dce}{%
+           family={Española},
+           familyi={E\bibinitperiod},
+           given={Real\bibnamedelima Academia},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \strng{namehash}{cf53e1cc68a110215dd4bb3932f57dce}
+      \strng{fullhash}{cf53e1cc68a110215dd4bb3932f57dce}
+      \strng{bibnamehash}{cf53e1cc68a110215dd4bb3932f57dce}
+      \strng{authorbibnamehash}{cf53e1cc68a110215dd4bb3932f57dce}
+      \strng{authornamehash}{cf53e1cc68a110215dd4bb3932f57dce}
+      \strng{authorfullhash}{cf53e1cc68a110215dd4bb3932f57dce}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Diccionario de la lengua española}
+      \field{note}{Consultado el 27 de junio de 2024}
+      \field{title}{La Academia entrega la 23.ª edición del DRAE, que se publicará en octubre}
+      \field{year}{2014}
+      \verb{urlraw}
+      \verb https://www.rae.es
+      \endverb
+      \verb{url}
+      \verb https://www.rae.es
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

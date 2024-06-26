@@ -1,2 +1,2 @@
-# compi-informe
-Informe correspondiente al trabajo de la materia compiladores, denominado "Tokenizador Mínimo para Speech Analytics"
+# is3-informe
+El informe final del proyecto desarrollado para el curso de Ingeniería del Software 3.

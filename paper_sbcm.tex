@@ -1,7 +1,24 @@
-\documentclass[twocolumn, fontsize=10pt]{article}
-\usepackage[margin=0.70in]{geometry}
-\usepackage{lipsum,mwe,abstract}
-\usepackage[T1]{fontenc} 
+\documentclass[10pt,times,twocolumn]{article}
+
+\usepackage{sbcm2019}
+\usepackage{graphicx,url}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{biblatex}
+\addbibresource{example.bib}
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+%\usepackage{booktabs} % Para líneas de tabla más profesionales
+% -------------------------------------------------------
+% Packages that facilitate double-blind peer review
+% Comment the first line and uncomment the second to remove double-blindness
+%\usepackage[blind]{anonymize} % Blind
+\usepackage{anonymize} % not blind
+% --------------------------------------------------------
+
 \usepackage[spanish]{babel} 
 \usepackage{fancyhdr} % Custom headers and footers
 \pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
@@ -23,60 +40,38 @@
 \usepackage{xcolor}
 \usepackage{siunitx}
 \usepackage{icomma}
-
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
+\usepackage{listings}
 
-\renewenvironment{abstract} % Change how the abstract look to remove margins
- {\small
-  \begin{center}
-  \bfseries \abstractname\vspace{-.5em}\vspace{0pt}
-  \end{center}
-  \list{}{%
-    \setlength{\leftmargin}{0mm}
-    \setlength{\rightmargin}{\leftmargin}%
-  }
-  \item\relax}
- {\endlist}
- 
-\makeatletter
-\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt} % Change how the title looks like
-\begin{flushleft}
-  \textbf{\@title}
-  \@author \\ 
-  \@date
-\end{flushleft}\egroup
-}
-\makeatother
+\sloppy
 
-%% ------------------------------- HEAD ------------------------------- 
+\title{Desarrollo de un Tokenizador Mínimo para la Analítica de Voz en Interacciones Telefónicas en Español}
 
-\title{
-\centering
-\Large Desarrollo de un Tokenizador Mínimo para la Analítica de Voz en Interacciones Telefónicas en Español\\
-[10pt] 
-}
-\date{\today}
-\author{Elías Cristaldo}
-
-\providecommand{\keywords}[1]
+\author
 {
-  \small	
-  \textbf{\textit{Palabras clave:}} #1
+	\anonymize{Elías Cristaldo}\inst{1} 	
+}
+
+\address{
+	\anonymize{Ingeniería en Informática / 
+	Facultad Politécnica / 
+	Universidad Nacional de Asunción}\\
+    \anonymize{Campus, San Lorenzo – Paraguay, Teléfono (+595-21) 588 7000}\\ \\
+	\anonymize{\textit{27 de Junio del 2024\vspace{10pt}}}
 }
 
 \begin{document}
 
-\twocolumn[ \maketitle ]
+\maketitle
 
-% ------------------------------- ABSTRACT -------------------------------
 \begin{abstract}
-Este trabajo propone una solución a la problemática de los analizadores de voz, aplicando conocimientos fundamentales del análisis léxico para construir un tokenizador mínimo que funcione como una herramienta efectiva de analítica de voz. Este tokenizador se encargará de identificar los lexemas presentes en un texto que representa la interacción de una llamada telefónica. La solución se desarrolla en tres etapas principales: la primera etapa corresponde al análisis del personal de atención, en esta etapa el texto correspondiente a la interacción del personal de atención es ingresado y analizado, generando una puntuación que proporciona una idea relativa del desempeño del personal. Como segunda etapa tenemos el análisis del cliente, aquí se ingresa y analiza el texto correspondiente a la interacción del cliente, obteniendo una puntuación que refleja el nivel relativo de satisfacción del cliente respecto a la solución de sus necesidades. Como tercera y última etapa tenemos el análisis global, en esta etapa se realiza un análisis global combinando las puntuaciones obtenidas en las etapas anteriores, ofreciendo una evaluación integral de la llamada. El programa propuesto demuestra un buen desempeño en el análisis léxico del texto recibido como entrada. Además, puede ser ampliado para mejorar su capacidad de detección de patrones y, al ser combinado con otros algoritmos, alcanzar niveles óptimos de rendimiento.
-\end{abstract}
+Este informe propone una solución para la implementación de los analizadores de voz. Utilizando conocimientos fundamentales del análisis léxico, se construye un tokenizador mínimo que funciona como una herramienta de analítica de voz. Este tokenizador se encargará de identificar los lexemas presentes en un texto que representa la interacción de una llamada telefónica y asignará las etiquetas correspondientes. La solución se desarrolla en tres etapas principales: la primera etapa corresponde al análisis del personal de atención. En esta fase, el texto correspondiente al personal de atención es analizado, y como resultado, se obtiene una puntuación relativa al personal. Como segunda etapa tenemos el análisis del cliente, de vuelta se analiza el texto ingresado, pero en este caso realtiva al cliente, obteniendo así una puntuación que refleja el nivel relativo de satisfacción del cliente respecto a la solución de sus necesidades. Como tercera y última etapa tenemos el análisis global de la llamada, en esta etapa se realiza un análisis combinando las puntuaciones obtenidas en las etapas anteriores, ofreciendo una evaluación integral de la llamada. El programa propuesto demuestra un buen desempeño en el análisis léxico del texto recibido como entrada. Además, puede ser ampliado para mejorar su capacidad de detección de patrones y, al ser combinado con otros algoritmos, alcanzar niveles óptimos de rendimiento.\\
 
-\keywords{tokenizador mínimo, analítica de voz, procesamiento de lenguaje natural, análisis léxico, interacción telefónica, satisfacción del cliente, desempeño del personal}
-
+{\bf Keywords:} tokenizador mínimo, analítica de voz, análisis léxico, interacción telefónica, satisfacción del cliente, desempeño del personal, token.\\
 \rule{\linewidth}{0.5pt}
+
+\end{abstract}
 
 % ------------------------------- INTRODUCCION -------------------------------
 \section{Introducción}
@@ -84,12 +79,15 @@ En el ámbito de la analítica de conversaciones, la capacidad de procesar y ana
 
 Para abordar esta necesidad, presentamos el desarrollo de un tokenizador mínimo, conocido como MNLPTK (Minimal Natural Language Processing Tokenizer). Este sistema está diseñado para actuar como una solución de analítica de voz (speech analytics), con el objetivo de identificar y procesar palabras (lexemas) en textos en idioma español que son el resultado de conversaciones telefónicas.
 
-El \textbf{MNLPTK} se enfoca en la identificación precisa de lexemas en los textos de entrada, lo cual es un paso fundamental en el procesamiento del lenguaje natural (NLP). Una vez identificados los lexemas, el sistema los procesará para generar una ponderación sobre la llamada en general. Esta evaluación estará basada en varios criterios que reflejan la calidad y el contenido de la interacción.
+El \textbf{MNLPTK} se enfoca en la identificación precisa de lexemas en los textos de entrada, lo cual es un paso fundamental en el procesamiento del lenguaje natural (NLP). Una vez identificados los lexemas, el sistema los procesará para generar una ponderación sobre la llamada en general. 
+Esta evaluación se basará en varios criterios que, en cierta medida, reflejan la calidad y el contenido de la interacción.
 
 \section{Objetivo y alcance}
-El objetivo de este proyecto es implementar un sistema de Speech Analytics que utilice los conocimientos adquiridos en el análisis léxico de un compilador. Este sistema se diseñará para procesar y analizar grandes volúmenes de datos de audio, transformando el habla en texto y extrayendo información valiosa mediante técnicas avanzadas de procesamiento de lenguaje natural.
 
-A través de la aplicación de principios de análisis léxico, se espera desarrollar un programa capaz de identificar patrones en las conversaciones y asignar puntuaciones coherentes a las llamadas. Esto permitirá obtener un análisis detallado tanto de la calidad del servicio como de la atención al cliente, proporcionando información valiosa para mejorar continuamente el servicio ofrecido.
+
+El objetivo de este proyecto es implementar un sistema de \textbf{Speech Analytics} que aproveche los conocimientos adquiridos en el análisis léxico de un compilador. Este sistema se diseñará para procesar y analizar datos de audio convertidos a texto, extrayendo información valiosa para la organización.
+
+Aplicando principios de análisis léxico, se busca desarrollar un programa capaz de identificar patrones en las conversaciones y asignar puntuaciones coherentes a las llamadas. Este enfoque permitirá obtener un análisis detallado de la calidad del servicio y la atención al cliente, proporcionando información que pueda ayudar a mejorar continuamente el servicio ofrecido.
 
 En cuanto al alcance del proyecto, se espera que el análisis se realice únicamente a nivel léxico. No se considerarán aspectos sintácticos ni semánticos, ya que el objetivo es desarrollar un tokenizador mínimo.
 
@@ -97,10 +95,10 @@ El aprendizaje también es un área que puede ampliarse en este proyecto. Actual
 
 % ------------------------------- METODOLOGIA -------------------------------
 \section{Metodología}
-Para la aplicación del MNLPTK se establecieron los siguientes puntos.
+Para la aplicación del \textbf{MNLPTK} se establecieron los siguientes puntos.
 
 \subsection{Tokens definidos para el lenguaje de entrada}
-El MNLPTK contará con los siguientes TOKENS: \textbf{EXP\_MALA}, \textbf{EXP\_NEUTRA}, \textbf{EXP\_BUENA} que irán destinados para el análisis de la interacción del cliente y \textbf{ATC\_MALA}, \textbf{ATC\_NEUTRA}, \textbf{ATC\_BUENA} que corresponderán a la interacción del personal de atención al cliente.
+El MNLPTK contará con los siguientes tokens: \textbf{EXP\_MALA}, \textbf{EXP\_NEUTRA}, \textbf{EXP\_BUENA} que irán destinados para el análisis de la interacción del cliente y \textbf{ATC\_MALA}, \textbf{ATC\_NEUTRA}, \textbf{ATC\_BUENA} que corresponderán a la interacción del personal de atención al cliente.
 
 \subsection{Definición de la herramienta a utilizar para la definición de los patrones}
 Para la representación de los patrones se opta por utilizar el algoritmo de simulación de un \textbf{AFD} para obtener los lexemas. En la Figura \ref{fig:tokens} podemos observar una categorizacion de los tokens por colores de acuerdo si es una palabra buena, nuetral o mala. Esto último para entender a través de un ejemplo, el funcionamiento del algoritmo propuesto. 
@@ -129,7 +127,7 @@ Para la representación de los patrones se opta por utilizar el algoritmo de sim
 	\label{fig:tokens}
 \end{figure}
 
-A continuación, en la Figura \ref{fig:afd} se muestra a través de un ejemplo, la estructura que se utilizará en la implementación del AFD. En esta representación, cada nodo que corresponda a un estado final está asociado a una categoría específica. Es importante destacar que habrán dos estructuras similares: una para la atención al cliente, que manejará los tokens ATC\_MALA, ATC\_NEUTRA y ATC\_BUENA. Otra otra para la experiencia del cliente, que incluirá los tokens EXP\_MALA, EXP\_NEUTRA y EXP\_BUENA.
+A continuación, en la Figura \ref{fig:afd} se muestra a través de un ejemplo, la estructura que se utilizará en la implementación del AFD. En esta representación, cada nodo que corresponda a un estado final estará asociado una categoría específica. Es importante destacar que habrán dos estructuras similares: una para la atención al cliente, que manejará los tokens ATC\_MALA, ATC\_NEUTRA y ATC\_BUENA. Otra otra para la experiencia del cliente, que incluirá los tokens EXP\_MALA, EXP\_NEUTRA y EXP\_BUENA.
 
 \begin{figure}[H]
   \centering
@@ -210,7 +208,7 @@ A continuación, en la Figura \ref{fig:afd} se muestra a través de un ejemplo, 
 La idea es que todas las letras del abecedario tengan un único estado inicial. Esto permitirá que al recorrer la estructura, solo se necesite una función, la función \textbf{mover}. Esta función tomará un carácter de entrada y, en función del nodo en el que se encuentre, se moverá a un nuevo nodo.
 
 \subsection{Estructura de los Nodos del AFD}
-Para la construcción del AFD, se definió la estructura Nodo junto con sus atributos correspondientes. En la figura \ref{fig:estructura_nodo} podremos apreciar con más detalles la mencionada estructura.
+Para la construcción del AFD, se definió la estructura Nodo junto con sus atributos correspondientes. En la Figura \ref{fig:estructura_nodo} podremos apreciar con más detalles la mencionada estructura.
 
 \begin{figure}[H]
 	\begin{tikzpicture}
@@ -248,7 +246,7 @@ Para la construcción del AFD, se definió la estructura Nodo junto con sus atri
 	\label{fig:estructura_nodo}
 \end{figure}
 
-El atributo \textbf{Siguiente} es un array con 37 elementos, donde cada celda contiene una referencia a otro nodo. El atributo \textbf{Token} es una cadena de texto de tipo string que describe el token al que pertenece el nodo. Por último, el atributo \textbf{Estado Final} es un valor booleano que indica si el nodo es un estado final o no. En la siguiente sección, se presentará la función hash que mapea los valores del array \textbf{Siguiente}.
+El atributo \textbf{Siguiente} es un array con 37 elementos, donde cada celda contiene vacío o una referencia a otro nodo. El atributo \textbf{Token} es una cadena de texto de tipo string que describe el token al que pertenece el nodo. Por último, el atributo \textbf{Estado Final} es un valor booleano que indica si el nodo es un estado final o no. En la siguiente sección, se presentará la función hash que mapea los valores del array \textbf{Siguiente}.
 
 \subsection{Función Hash}
 En la sección anterior se presentó la estructura de un nodo, destacando que el atributo \textbf{Siguiente} es un array de 37 elementos. ¿Por qué se eligió esta estructura?. La decisión se basa en la necesidad de un acceso más rápido a los datos, donde cada posición del array representa un carácter del alfabeto, como se muestra en la Figura \ref{fig:funcion_hash}.
@@ -265,20 +263,19 @@ En la sección anterior se presentó la estructura de un nodo, destacando que el
 	\label{fig:funcion_hash}
 \end{figure}
 
-Se vió que el El Diccionario de la Real Academia Española contiene aproximadamente 93.000 entradas. Se calculó que cada nodo ocupa aproximadamente 464 bytes. Con una media de 6 letras por palabras. Por lo tanto se tiene que
+Se ha investigado que el diccionario de la RAE contiene aproximadamente 93.000 entradas \cite{rae2014}. Se calculó que cada nodo ocupa aproximadamente 464 bytes. Con una media de 6 letras por palabras. Por lo tanto se tiene que
 
 \[
 \begin{aligned}
 & N: \text{ Cantidad aproximada de nodos} \\
 & C: \text{ Capacidad requerida}\\
-&
 \end{aligned}
 \]
 
 \[
 \begin{aligned}
-N & = 93000 \: \left[palabras\right] * 6 \: \left[\frac{letras}{palabras}\right]\\
-& = 558000 \: \left[letras\right]\\
+N & = 93{.}000 \: \left[palabras\right] * 6 \: \left[\frac{letras}{palabras}\right]\\
+& = 558{.}000 \: \left[letras\right]\\
 &
 \end{aligned}
 \]
@@ -287,8 +284,8 @@ como cada letra representa un nodo, entonces...
 
 \[
 \begin{aligned}
-C & = 558000 \: \left[nodo\right] * 464 \: \left[\frac{bytes}{nodo}\right]\\
-& = 258912000 \: \left[bytes\right]\\
+C & = 558{.}000 \: \left[nodo\right] * 464 \: \left[\frac{bytes}{nodo}\right]\\
+& = 258{.}912{.}000 \: \left[bytes\right]\\
 &
 \end{aligned}
 \]
@@ -297,17 +294,85 @@ pasando a MB tenemos que ...
 
 \[
 \begin{aligned}
-558000 \: \left[bytes\right] & \equiv \frac{258912000}{2^{20}}\\
+258{.}912{.}000 \: \left[bytes\right] & \equiv \frac{258{.}912{.}000}{2^{20}}\\
 & \approx \num{258.912} \left[MB\right]\\
 &
 \end{aligned}
 \]
 
 por lo tanto, la estructura propuesta es viable de implementar, ya que no requiere un espacio considerable.
+Aunque no se han tenido en cuenta las conjugaciones, hemos obtenido una aproximación que nos servirá como una cota.
 
 \subsection{Consideraciones para la puntuación}
+Para obtener las evaluaciones, se tuvieron en cuenta las siguientes consideraciones:
+
+\[
+\begin{aligned}
+& - total: \text{ Cantidad de palabras reconocidas en la entrada.} \\
+& - total_{buenas}: \text{ Cantidad de palabras buenas encontradas.}\\
+& \text{Si se encontraron un saludo y una despedida, cada uno suma}\\
+& \text{un punto en este apartado.} \\
+& - total_{malas}: \text{ Cantidad de palabras malas encontradas.}\\
+& \text{Si no se encontraron un saludo y una despedida, cada uno suma}\\
+& \text{un punto en este apartado.} \\
+& - total_{malas}: \text{ Cantidad de palabras malas encontradas.}\\
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+& buenas_{norm}=\frac{total_{buenas}}{total}\\
+& malas_{norm}=\frac{total_{malas}}{total}\\
+& balance = buenas_{norm} - malas_{norm},
+\end{aligned}
+\]
+
+teniendo en cuenta lo anterior la puntuación final estará dada por \(1 + p(x)\), siendo \(p(x)\) definida por,
+
+\[
+p(x) =
+\begin{cases}
+0 & \text{si } balance <= 0, \\
+balance*4 & \text{si } balance > 0
+\end{cases}
+\]
+
+con esto, obtendremos una puntuación final que oscilará entre 1 y 5.
 
 \section{Código fuente}
+
+A continuación, se presentan las partes más importantes del código fuente:
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=10pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    breaklines=true,
+    tabsize=4,
+    captionpos=b
+}
+
+\begin{lstlisting}[caption={Ejemplo de código en Python}]
+def fibonacci(n):
+    """Return the n-th Fibonacci number."""
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+\end{lstlisting}
 
 \section{Caso de prueba}
 A continuación, se detallan los pasos necesarios para procesar el caso de prueba:
@@ -339,9 +404,9 @@ A continuación se detallan los pasos a seguir para procesar la interacción del
 \subsubsection{Ingreso de los datos}
 Primero, se ingresa el texto en el apartado correspondiente al Personal de Atención al Cliente (ATC), tal como se muestra en la Figura \ref{fig:graf_atc_paso1}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{graficas/ATC_paso1.png}
+    \includegraphics[width=\linewidth]{fig/ATC_paso1.png}
     \caption{Ingreso de datos del personal}
     \label{fig:graf_atc_paso1}
 \end{figure}
@@ -349,9 +414,9 @@ Primero, se ingresa el texto en el apartado correspondiente al Personal de Atenc
 \subsubsection{Procesamos el texto}
 A continuación, se presiona el botón \textbf{Procesar} correspondiente al personal, tal como se muestra en la Figura \ref{fig:graf_atc_paso2}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{graficas/ATC_paso2.png}
+    \includegraphics[width=\linewidth]{fig/ATC_paso2.png}
     \caption{Procesamiento del texto ingresado}
     \label{fig:graf_atc_paso2}
 \end{figure}
@@ -359,9 +424,9 @@ A continuación, se presiona el botón \textbf{Procesar} correspondiente al pers
 \subsubsection{Categorización de los lexemas}
 Al principio, es necesario entrenar el programa, ya que aún no tiene cargada ninguna información. Por lo tanto, debemos indicarle palabra por palabra a qué token pertenecen, tal y como se observa en la Figura \ref{fig:graf_atc_paso3}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{graficas/ATC_paso3.png}
+    \includegraphics[width=\linewidth]{fig/ATC_paso3.png}
     \caption{Categorización de los lexemas}
     \label{fig:graf_atc_paso3}
 \end{figure}
@@ -369,18 +434,18 @@ Al principio, es necesario entrenar el programa, ya que aún no tiene cargada ni
 \subsubsection{Resultados preliminares}
 Una vez completado el paso anterior, podremos observar los resultados generados para este análisis, los cuales se ajustarán a los criterios establecidos previamente. En la Figura \ref{fig:graf_atc_paso4}, podremos observar esto. Estos resultados nos proporcionan información sobre el desempeño del personal de ATC y nos permiten identificar si es necesario realizar mejoras en su capacitación.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{graficas/ATC_paso4.png}
+    \includegraphics[width=\linewidth]{fig/ATC_paso4.png}
     \caption{Resultados del análisis}
     \label{fig:graf_atc_paso4}
 \end{figure}
 
 En la pantalla principal también podremos visualizar los resultados de manera gráfica de la categorización, tal y como se muestra en la Figura \ref{fig:graf_atc_paso5}. En donde el color de resaltado indica el token al que pertenece la palabra.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{graficas/ATC_paso5.png}
+    \includegraphics[width=\linewidth]{fig/ATC_paso5.png}
     \caption{Resultado de la categorización}
     \label{fig:graf_atc_paso5}
 \end{figure}
@@ -388,18 +453,18 @@ En la pantalla principal también podremos visualizar los resultados de manera g
 \subsubsection{Administración de tokens}
 Una vez procesado el texto, también podemos gestionar los tokens de las palabras reconocidas en el texto. Es decir, tenemos la opción de cambiar los tokens ya establecidos para que el tokenizador pueda actualizar su base de datos y aprender conforme vayamos estableciendo los parámetros. Para acceder a esta función, simplemente hacemos clic en el botón \textbf{Administrar Tokens}, como se muestra en la Figura \ref{fig:graf_atc_paso6}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{graficas/ATC_paso6.png}
+    \includegraphics[width=\linewidth]{fig/ATC_paso6.png}
     \caption{Administración de tokens}
     \label{fig:graf_atc_paso6}
 \end{figure}
 
 A continuación, se desplegará la ventana de administración de tokens, donde tendremos la capacidad de modificar el token asociado al lexema reconocido, tal y como se puede observar en la Figura \ref{fig:graf_atc_paso7}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{graficas/ATC_paso7.png}
+    \includegraphics[width=0.5\textwidth]{fig/ATC_paso7.png}
     \caption{Ventana del administrador de tokens}
     \label{fig:graf_atc_paso7}
 \end{figure}
@@ -407,9 +472,9 @@ A continuación, se desplegará la ventana de administración de tokens, donde t
 \subsection{Procesamiento de la interacción del Cliente}
 Todos los pasos descritos anteriormente para la interacción del personal de atención al cliente (ATC) se repiten para el cliente. El resultado final se puede observar en la Figura \ref{fig:graf_cliente_resultados}. Esta información es útil para determinar la calidad del servicio ofrecido.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{graficas/cliente_resultados.png}
+    \includegraphics[width=0.5\textwidth]{fig/cliente_resultados.png}
     \caption{Ventana del administrador de tokens}
     \label{fig:graf_cliente_resultados}
 \end{figure}
@@ -417,27 +482,22 @@ Todos los pasos descritos anteriormente para la interacción del personal de ate
 \subsection{Resultado y puntuación general de la interacción}
 A continuación, para generar el resumen general de la interacción, debemos presionar el botón \textbf{Generar Resumen}, como se muestra en la Figura \ref{fig:graf_resumen_general}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{graficas/resumen_general.png}
+    \includegraphics[width=0.5\textwidth]{fig/resumen_general.png}
     \caption{Generación del resumen general}
     \label{fig:graf_resumen_general}
 \end{figure}
 
 Esto nos generará un resumen de la interacción de la llamada entre el ATC y el cliente. Esta puntuación es un promedio de ambas interacciones y nos proporciona una noción de la puntuación general de la llamada realizada. El resultado se puede observar en la Figura \ref{fig:graf_resultado_general}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{graficas/resultado_general.png}
+    \includegraphics[width=0.5\textwidth]{fig/resultado_general.png}
     \caption{Generación del resumen general}
     \label{fig:graf_resultado_general}
 \end{figure}
 
-
-% ------------------------------- MAIN CONTENT -------------------------------
-\begin{thebibliography}{}
-\bibitem{Ref1}{Shyam Lal1 and Mahesh Chandra (2014). Efficient Algorithm for Contrast Enhancement of Natural Images \href{https://citeseerx.ist.psu.edu/documentrepid=rep1&type=pdf&doi=1beeaf3b38ec47c86e461fd0b2778cd4bb7b7079}{(enlace)}.}
-\end{thebibliography}
+\printbibliography
 
 \end{document}
- 
