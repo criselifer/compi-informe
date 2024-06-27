@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.5.8)  26 JUN 2024 21:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.5.8)  26 JUN 2024 22:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1360,22 +1360,21 @@ Package pdftex.def Info: fig/ATC_paso3.png  used on input line 757.
 File: fig/ATC_paso4.png Graphic file (type png)
 <use fig/ATC_paso4.png>
 Package pdftex.def Info: fig/ATC_paso4.png  used on input line 767.
-(pdftex.def)             Requested size: 233.31259pt x 178.67389pt.
+(pdftex.def)             Requested size: 209.9799pt x 160.8062pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [8 <./fig/ATC_paso1.png> <./fig/ATC_paso2.png> <./fig/ATC_paso3.png>]
-<fig/ATC_paso5.png, id=469, 986.4855pt x 410.7345pt>
+[8 <./fig/ATC_paso1.png> <./fig/ATC_paso2.png> <./fig/ATC_paso3.png> <./fig/ATC
+_paso4.png>]
+<fig/ATC_paso5.png, id=470, 986.4855pt x 410.7345pt>
 File: fig/ATC_paso5.png Graphic file (type png)
 <use fig/ATC_paso5.png>
 Package pdftex.def Info: fig/ATC_paso5.png  used on input line 776.
 (pdftex.def)             Requested size: 233.31259pt x 97.14308pt.
-<fig/ATC_paso6.png, id=471, 1233.10687pt x 513.41812pt>
+<fig/ATC_paso6.png, id=472, 1233.10687pt x 513.41812pt>
 File: fig/ATC_paso6.png Graphic file (type png)
 <use fig/ATC_paso6.png>
 Package pdftex.def Info: fig/ATC_paso6.png  used on input line 786.
 (pdftex.def)             Requested size: 233.31259pt x 97.14308pt.
-<fig/ATC_paso7.png, id=473, 470.50781pt x 261.97874pt>
+<fig/ATC_paso7.png, id=474, 470.50781pt x 261.97874pt>
 File: fig/ATC_paso7.png Graphic file (type png)
 <use fig/ATC_paso7.png>
 Package pdftex.def Info: fig/ATC_paso7.png  used on input line 795.
@@ -1390,7 +1389,10 @@ Underfull \hbox (badness 5245) in paragraph at lines 800--800
 []\OT1/ptm/m/sc/10 Procesamiento de la in-ter-ac-ci[]on del
  []
 
-<fig/cliente_resultados.png, id=475, 987.08775pt x 410.7345pt>
+
+Underfull \vbox (badness 1024) has occurred while \output is active []
+
+<fig/cliente_resultados.png, id=476, 987.08775pt x 410.7345pt>
 File: fig/cliente_resultados.png Graphic file (type png)
 <use fig/cliente_resultados.png>
 Package pdftex.def Info: fig/cliente_resultados.png  used on input line 805.
@@ -1400,7 +1402,7 @@ Overfull \hbox (11.3811pt too wide) in paragraph at lines 805--806
  [][] 
  []
 
-<fig/resumen_general.png, id=477, 1234.6125pt x 514.17094pt>
+<fig/resumen_general.png, id=478, 1234.6125pt x 514.17094pt>
 File: fig/resumen_general.png Graphic file (type png)
 <use fig/resumen_general.png>
 Package pdftex.def Info: fig/resumen_general.png  used on input line 815.
@@ -1410,9 +1412,7 @@ Overfull \hbox (11.3811pt too wide) in paragraph at lines 815--816
  [][] 
  []
 
-[9 <./fig/ATC_paso4.png> <./fig/ATC_paso5.png> <./fig/ATC_paso6.png> <./fig/ATC
-_paso7.png> <./fig/cliente_resultados.png> <./fig/resumen_general.png>]
-<fig/resultado_general.png, id=492, 985.88326pt x 409.53pt>
+<fig/resultado_general.png, id=480, 985.88326pt x 409.53pt>
 File: fig/resultado_general.png Graphic file (type png)
 <use fig/resultado_general.png>
 Package pdftex.def Info: fig/resultado_general.png  used on input line 824.
@@ -1422,13 +1422,15 @@ Overfull \hbox (11.3811pt too wide) in paragraph at lines 824--825
  [][] 
  []
 
+[9 <./fig/ATC_paso5.png> <./fig/ATC_paso6.png> <./fig/ATC_paso7.png> <./fig/cli
+ente_resultados.png> <./fig/resumen_general.png> <./fig/resultado_general.png>]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 8
 29.
 (C:\Program Files\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [10
 
- <./fig/resultado_general.png>] (paper_sbcm.aux
+] (paper_sbcm.aux
 LaTeX Info: Redefining \sptext on input line 12.
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
@@ -1461,7 +1463,7 @@ les/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX/fonts/t
 ype1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmbi8
 a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Program Fil
 es/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper_sbcm.pdf (10 pages, 1177686 bytes).
+Output written on paper_sbcm.pdf (10 pages, 1177502 bytes).
 PDF statistics:
  630 PDF objects out of 1000 (max. 8388607)
  363 named destinations out of 1000 (max. 500000)
