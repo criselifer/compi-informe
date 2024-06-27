@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.5.8)  26 JUN 2024 19:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.5.8)  26 JUN 2024 21:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1327,8 +1327,8 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Overfull \hbox (12.56052pt too wide) in paragraph at lines 601--602
-[][][][][][][] 
+Overfull \hbox (12.56052pt too wide) in paragraph at lines 604--605
+[][][][][][][][] 
  []
 
 
@@ -1344,93 +1344,91 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <fig/ATC_paso1.png, id=442, 987.69pt x 411.939pt>
 File: fig/ATC_paso1.png Graphic file (type png)
 <use fig/ATC_paso1.png>
-Package pdftex.def Info: fig/ATC_paso1.png  used on input line 734.
+Package pdftex.def Info: fig/ATC_paso1.png  used on input line 737.
 (pdftex.def)             Requested size: 233.31259pt x 97.30223pt.
 <fig/ATC_paso2.png, id=445, 1234.6125pt x 514.92375pt>
 File: fig/ATC_paso2.png Graphic file (type png)
 <use fig/ATC_paso2.png>
-Package pdftex.def Info: fig/ATC_paso2.png  used on input line 744.
+Package pdftex.def Info: fig/ATC_paso2.png  used on input line 747.
 (pdftex.def)             Requested size: 233.31259pt x 97.30225pt.
 <fig/ATC_paso3.png, id=447, 301.72725pt x 98.769pt>
 File: fig/ATC_paso3.png Graphic file (type png)
 <use fig/ATC_paso3.png>
-Package pdftex.def Info: fig/ATC_paso3.png  used on input line 754.
+Package pdftex.def Info: fig/ATC_paso3.png  used on input line 757.
 (pdftex.def)             Requested size: 233.31259pt x 76.37486pt.
 <fig/ATC_paso4.png, id=449, 257.16075pt x 196.93575pt>
 File: fig/ATC_paso4.png Graphic file (type png)
 <use fig/ATC_paso4.png>
-Package pdftex.def Info: fig/ATC_paso4.png  used on input line 764.
+Package pdftex.def Info: fig/ATC_paso4.png  used on input line 767.
 (pdftex.def)             Requested size: 233.31259pt x 178.67389pt.
-<fig/ATC_paso5.png, id=451, 986.4855pt x 410.7345pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8 <./fig/ATC_paso1.png> <./fig/ATC_paso2.png> <./fig/ATC_paso3.png>]
+<fig/ATC_paso5.png, id=469, 986.4855pt x 410.7345pt>
 File: fig/ATC_paso5.png Graphic file (type png)
 <use fig/ATC_paso5.png>
-Package pdftex.def Info: fig/ATC_paso5.png  used on input line 773.
+Package pdftex.def Info: fig/ATC_paso5.png  used on input line 776.
 (pdftex.def)             Requested size: 233.31259pt x 97.14308pt.
-
-[8 <./fig/ATC_paso1.png> <./fig/ATC_paso2.png> <./fig/ATC_paso3.png> <./fig/ATC
-_paso4.png>]
-<fig/ATC_paso6.png, id=469, 1233.10687pt x 513.41812pt>
+<fig/ATC_paso6.png, id=471, 1233.10687pt x 513.41812pt>
 File: fig/ATC_paso6.png Graphic file (type png)
 <use fig/ATC_paso6.png>
-Package pdftex.def Info: fig/ATC_paso6.png  used on input line 783.
+Package pdftex.def Info: fig/ATC_paso6.png  used on input line 786.
 (pdftex.def)             Requested size: 233.31259pt x 97.14308pt.
-<fig/ATC_paso7.png, id=471, 470.50781pt x 261.97874pt>
+<fig/ATC_paso7.png, id=473, 470.50781pt x 261.97874pt>
 File: fig/ATC_paso7.png Graphic file (type png)
 <use fig/ATC_paso7.png>
-Package pdftex.def Info: fig/ATC_paso7.png  used on input line 792.
+Package pdftex.def Info: fig/ATC_paso7.png  used on input line 795.
 (pdftex.def)             Requested size: 244.6937pt x 136.24571pt.
 
-Overfull \hbox (11.3811pt too wide) in paragraph at lines 792--793
+Overfull \hbox (11.3811pt too wide) in paragraph at lines 795--796
  [][] 
  []
 
 
-Underfull \hbox (badness 5245) in paragraph at lines 797--797
+Underfull \hbox (badness 5245) in paragraph at lines 800--800
 []\OT1/ptm/m/sc/10 Procesamiento de la in-ter-ac-ci[]on del
  []
 
-
-Underfull \vbox (badness 6220) has occurred while \output is active []
-
-<fig/cliente_resultados.png, id=473, 987.08775pt x 410.7345pt>
+<fig/cliente_resultados.png, id=475, 987.08775pt x 410.7345pt>
 File: fig/cliente_resultados.png Graphic file (type png)
 <use fig/cliente_resultados.png>
-Package pdftex.def Info: fig/cliente_resultados.png  used on input line 802.
+Package pdftex.def Info: fig/cliente_resultados.png  used on input line 805.
 (pdftex.def)             Requested size: 244.6937pt x 101.81848pt.
 
-Overfull \hbox (11.3811pt too wide) in paragraph at lines 802--803
+Overfull \hbox (11.3811pt too wide) in paragraph at lines 805--806
  [][] 
  []
 
-<fig/resumen_general.png, id=475, 1234.6125pt x 514.17094pt>
+<fig/resumen_general.png, id=477, 1234.6125pt x 514.17094pt>
 File: fig/resumen_general.png Graphic file (type png)
 <use fig/resumen_general.png>
-Package pdftex.def Info: fig/resumen_general.png  used on input line 812.
+Package pdftex.def Info: fig/resumen_general.png  used on input line 815.
 (pdftex.def)             Requested size: 244.6937pt x 101.89873pt.
 
-Overfull \hbox (11.3811pt too wide) in paragraph at lines 812--813
+Overfull \hbox (11.3811pt too wide) in paragraph at lines 815--816
  [][] 
  []
 
-<fig/resultado_general.png, id=477, 985.88326pt x 409.53pt>
+[9 <./fig/ATC_paso4.png> <./fig/ATC_paso5.png> <./fig/ATC_paso6.png> <./fig/ATC
+_paso7.png> <./fig/cliente_resultados.png> <./fig/resumen_general.png>]
+<fig/resultado_general.png, id=492, 985.88326pt x 409.53pt>
 File: fig/resultado_general.png Graphic file (type png)
 <use fig/resultado_general.png>
-Package pdftex.def Info: fig/resultado_general.png  used on input line 821.
+Package pdftex.def Info: fig/resultado_general.png  used on input line 824.
 (pdftex.def)             Requested size: 244.6937pt x 101.64487pt.
 
-Overfull \hbox (11.3811pt too wide) in paragraph at lines 821--822
+Overfull \hbox (11.3811pt too wide) in paragraph at lines 824--825
  [][] 
  []
 
-[9 <./fig/ATC_paso5.png> <./fig/ATC_paso6.png> <./fig/ATC_paso7.png> <./fig/cli
-ente_resultados.png> <./fig/resumen_general.png> <./fig/resultado_general.png>]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 8
-26.
+29.
 (C:\Program Files\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [10
 
-] (paper_sbcm.aux
+ <./fig/resultado_general.png>] (paper_sbcm.aux
 LaTeX Info: Redefining \sptext on input line 12.
 LaTeX Info: Redefining \. on input line 12.
 LaTeX Info: Redefining \% on input line 12.
@@ -1446,11 +1444,11 @@ Package logreq Info: Writing requests to 'paper_sbcm.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 39030 strings out of 474485
- 771757 string characters out of 5753544
- 2472542 words of memory out of 5000000
- 60417 multiletter control sequences out of 15000+600000
- 579302 words of font info for 75 fonts, out of 8000000 for 9000
+ 39056 strings out of 474485
+ 771919 string characters out of 5753544
+ 2477542 words of memory out of 5000000
+ 60433 multiletter control sequences out of 15000+600000
+ 582404 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,12n,93p,1496b,2626s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Progra
@@ -1463,9 +1461,9 @@ les/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX/fonts/t
 ype1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmbi8
 a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Program Fil
 es/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper_sbcm.pdf (10 pages, 1176480 bytes).
+Output written on paper_sbcm.pdf (10 pages, 1177686 bytes).
 PDF statistics:
- 625 PDF objects out of 1000 (max. 8388607)
- 360 named destinations out of 1000 (max. 500000)
+ 630 PDF objects out of 1000 (max. 8388607)
+ 363 named destinations out of 1000 (max. 500000)
  207 words of extra memory for PDF output out of 10000 (max. 10000000)
 
